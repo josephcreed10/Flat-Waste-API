@@ -1,6 +1,14 @@
-﻿namespace FlatWaste.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace FlatWaste.Controllers
 {
-    public class FlatController
+    [ApiController]
+    [Route("api/flat")]
+    public class FlatController: ControllerBase
     {
+        public ActionResult Home()
+        {
+            return Ok();
+        }
     }
 }
