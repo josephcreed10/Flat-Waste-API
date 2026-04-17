@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlatWaste.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260416080839_initial")]
+    [Migration("20260417005103_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -39,6 +39,9 @@ namespace FlatWaste.Migrations
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CycleNumber")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ScheduledDate")
                         .HasColumnType("datetime2");
 
@@ -53,23 +56,6 @@ namespace FlatWaste.Migrations
                     b.ToTable("DutySchedules");
                 });
 
-            modelBuilder.Entity("FlatWaste.Entities.Flat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Flats");
-                });
-
             modelBuilder.Entity("FlatWaste.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -78,27 +64,17 @@ namespace FlatWaste.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("FlatId")
+                    b.Property<int>("CreditBalance")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RotationOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FlatId");
 
                     b.ToTable("Users");
                 });
@@ -106,7 +82,7 @@ namespace FlatWaste.Migrations
             modelBuilder.Entity("FlatWaste.Entities.DutySchedule", b =>
                 {
                     b.HasOne("FlatWaste.Entities.User", "AssignedUser")
-                        .WithMany("DutySchedules")
+                        .WithMany("Duties")
                         .HasForeignKey("AssignedUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -116,21 +92,7 @@ namespace FlatWaste.Migrations
 
             modelBuilder.Entity("FlatWaste.Entities.User", b =>
                 {
-                    b.HasOne("FlatWaste.Entities.Flat", "Flat")
-                        .WithMany("Users")
-                        .HasForeignKey("FlatId");
-
-                    b.Navigation("Flat");
-                });
-
-            modelBuilder.Entity("FlatWaste.Entities.Flat", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("FlatWaste.Entities.User", b =>
-                {
-                    b.Navigation("DutySchedules");
+                    b.Navigation("Duties");
                 });
 #pragma warning restore 612, 618
         }

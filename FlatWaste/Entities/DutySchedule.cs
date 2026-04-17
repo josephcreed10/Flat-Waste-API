@@ -6,10 +6,10 @@ namespace FlatWaste.Entities
     {
         public int Id { get; set; }
         public int AssignedUserId { get; set; }
-        public User? AssignedUser { get; set; }
+        public User AssignedUser { get; set; } = null!;
         public DateTime ScheduledDate { get; set; }
-        [Required]
-        public required string Status { get; set; }
+        public int CycleNumber { get; set; }
+        public string Status { get; set; } = "Pending";
         public DateTime? CompletedAt { get; set; }
     }
 }
